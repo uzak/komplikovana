@@ -1,3 +1,7 @@
 ## App
 
 https://docs.ruan.dev/docker/flask-redis/
+
+## Gitlab
+
++ Setup Mirror: https://docs.gitlab.com/ee/user/project/repository/mirror/
