@@ -1,5 +1,3 @@
-image: gitlab-ci
-
 stages:
   - test
   - build
