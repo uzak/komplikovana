@@ -8,14 +8,19 @@ stages:
 lint:
   stage: test
   script:
-    - echo "Lint me"
+    - echo "XXX lint me"
 
 unittest:
   stage: test
   script:
-    - echo "run tests"
+    - echo "XXX run tests"
 
 build-docker:
   stage: build
   script:
-    - echo "build docker"
+    - make build-image
+  
+push-to-registry:
+  stage: build
+  script:
+    - make upload-image
