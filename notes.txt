@@ -4,6 +4,4 @@ https://docs.ruan.dev/docker/flask-redis/
 
 ## Gitlab
 
-+ Setup Mirror: https://docs.gitlab.com/ee/user/project/repository/mirror/
-    + Generate a personal token
-    + Setup a mirror
+# setup a remote and after commit always use the `sync-to-gitlab.sh` script
