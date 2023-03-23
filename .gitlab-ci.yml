@@ -1,0 +1,21 @@
+stages:
+  - test
+  - build
+  - integrationTest
+  - staging
+  - production
+
+lint:
+  stage: test
+  script:
+    - echo "Lint me"
+
+unittest:
+  stage: test
+  script:
+    - echo "run tests"
+
+build-docker:
+  stage: build
+  script:
+    - echo "build docker"
