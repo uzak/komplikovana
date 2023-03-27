@@ -20,6 +20,12 @@ spec:
         volumeMounts:
           - name: redis-data
             mountPath: /data
+        ports:
+          - containerPort: 6379
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
       volumes:
       - name: redis-data
         persistentVolumeClaim:

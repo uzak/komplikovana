@@ -6,6 +6,7 @@ run-app:
 	docker-compose up
 
 build-image:
+	eval $(minikube docker-env)
 	docker build -t ${NAME} .
 	docker tag ${NAME}:latest ${FULL_NAME}:latest
 
@@ -16,4 +17,14 @@ upload-image:
 get-revision:
 	git rev-list --count --first-parent HEAD
 
-.PHONY: build-image upload-image get-revision run-app
+run-minikube:
+	kubectl delete namespace ${NAME} || exit 0
+	kubectl create namespace ${NAME}
+	kubectl apply -n ${NAME} -f k8s/redis
+	kubectl apply  -n ${NAME} -f k8s/app
+	minikube service ${NAME} -n ${NAME}
+
+run-eks:
+	exit 1
+
+.PHONY: build-image upload-image get-revision run-app run-minikube

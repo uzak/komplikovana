@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: komplikovana
+spec:
+  selector:
+    app: komplikovana
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 80

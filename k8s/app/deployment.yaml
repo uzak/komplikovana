@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: komplikovana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: komplikovana
+  template:
+    metadata:
+      labels:
+        app: komplikovana
+    spec:
+      containers:
+      - image: komplikovana
+        name: komplikovana
+        imagePullPolicy: Never

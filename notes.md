@@ -21,11 +21,17 @@ We need to be able to pull the images to the ECR registry. For that we created a
 
 Next we create deployment files for k8s. These are based on `docker-compose.yml`. Useful links:
 
+### minikube
+
+#### redis
 * https://rpi4cluster.com/k3s/k3s-redis/
 * https://github.com/Einsteinish/kubernetes_django/tree/master/minikube-3/deploy/redis
 * https://acloudguru.com/hands-on-labs/creating-persistent-storage-for-pods-in-kubernetes
 
-### minikube
+#### app
+
+* [use service name as service](https://stackoverflow.com/questions/52274134/connect-to-other-pod-from-a-pod)
+* [service needs an app in spec.selector](https://stackoverflow.com/questions/60744883/redis-in-kubernetes-connection-refused)
 
 ### ECS
 
