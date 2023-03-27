@@ -1,7 +1,0 @@
-## App
-
-https://docs.ruan.dev/docker/flask-redis/
-
-## Gitlab
-
-# setup a remote and after commit always use the `sync-to-gitlab.sh` script
