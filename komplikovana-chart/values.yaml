@@ -1,0 +1,22 @@
+# Default values for komplikovana-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+useEKS: true
+
+redis:
+  port: 6379
+  volume:
+    mountPath: /data
+    size: 1Gi
+
+replicaCount: 1
+
+image:
+  name: komplikovana
+  repository: 532993743491.dkr.ecr.eu-central-1.amazonaws.com
+  pullPolicy: IfNotPresent  # or Never
+
+service:
+  port: 80
+  targetPort: 80

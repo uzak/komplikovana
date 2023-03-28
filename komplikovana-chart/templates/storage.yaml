@@ -1,0 +1,47 @@
+{{- if .Values.useEKS }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ebs-sc
+  resources:
+    requests:
+      storage: {{ .Values.redis.volume.size }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+
+{{- else -}}
+# minikube
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: redis-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: {{ .Values.redis.volume.size }}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.redis.volume.mountPath }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.redis.volume.size }}
+{{- end -}}

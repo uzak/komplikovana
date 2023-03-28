@@ -1,7 +1,9 @@
 REPO = 532993743491.dkr.ecr.eu-central-1.amazonaws.com
 NAME = komplikovana
 FULL_NAME = ${REPO}/${NAME}
-REV=$(shell git rev-list --count --first-parent HEAD)
+REV ?= $(shell git rev-list --count --first-parent HEAD)
+EKS_REGION = eu-central-1
+EKS_CLUSTER_NAME = eks-cluster
 
 run-app:
 	docker-compose up
@@ -22,29 +24,31 @@ get-revision:
 
 run-minikube:
 	kubectl delete namespace ${NAME} || exit 0
+	kubectl delete pv redis-pv || exit 0
 	kubectl create namespace ${NAME}
-	kubectl apply -n ${NAME} -f k8s/storage/minikube
-	kubectl apply -n ${NAME} -f k8s/redis
-	kubectl apply  -n ${NAME} -f k8s/app
+	helm install ${NAME} komplikovana-chart/ -n ${NAME} --set useEKS=false
 	minikube service ${NAME} -n ${NAME}
 
 create-eks-cluster:
 	eksctl create cluster \
-		--name eks-cluster \
-		--region eu-central-1 \
-		--nodegroup-name eks-workers \
-		--node-type t2.micro \
+		--name ${EKS_CLUSTER_NAME} \
+		--region ${EKS_REGION} \
+		--nodegroup-name ${EKS_CLUSTER_NAME}-workers \
+		--node-type t3.medium \	
 		--nodes 2 \
 		--nodes-min 2 \
-		--nodes-max 6
+		--nodes-max 3
 	kubectl config use-context martin@eks-cluster.eu-central-1.eksctl.io
-	kubectl apply -f k8s/storage/eks/
-	kubectl apply -f k8s/redis/
-	kubectl apply -f k8s/app
+	helm install ${NAME} komplikovana-chart/ 
+	echo "TODO create IAM user"
+	echo "TODO create aws-secret"
+	echo helm upgrade --install aws-ebs-csi-driver \
+    	--namespace kube-system \
+    	aws-ebs-csi-driver/aws-ebs-csi-driver
 
-run-eks:
-	exit 1
+delete-cluster:
+	eksctl delete cluster --region=${EKS_REGION} --name=${EKS_CLUSTER_NAME}
 
 .PHONY: build-image upload-image get-revision \
 	run-app run-minikube create-eks-cluster \
-	run-eks
+	run-eks delete-cluster

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: komplikovana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: komplikovana
+  template:
+    metadata:
+      labels:
+        app: komplikovana
+    spec:
+      containers:
+      - image: {{ .Values.image.repository }}/{{ .Values.image.name }}:latest
+        name: {{ .Values.image.name }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: komplikovana
+spec:
+  selector:
+    app: komplikovana
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+{{ if .Values.useEKS }}
+  type: LoadBalancer
+{{ else }}
+  type: ClusterIP
+{{ end }}
