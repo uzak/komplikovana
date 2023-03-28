@@ -13,6 +13,7 @@ spec:
         app: komplikovana
     spec:
       containers:
-      - image: komplikovana
+      - image: 532993743491.dkr.ecr.eu-central-1.amazonaws.com/komplikovana
         name: komplikovana
-        imagePullPolicy: Never
+        #imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent

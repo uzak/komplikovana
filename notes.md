@@ -33,7 +33,17 @@ Next we create deployment files for k8s. These are based on `docker-compose.yml`
 * [use service name as service](https://stackoverflow.com/questions/52274134/connect-to-other-pod-from-a-pod)
 * [service needs an app in spec.selector](https://stackoverflow.com/questions/60744883/redis-in-kubernetes-connection-refused)
 
-### ECS
+### EKS
+
+#### EBS
+* [install AWS EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/docs/install.md)
+    * used `aws-secret` approach. The user has  `AmazonEBSCSIDriverPolicy` attached.
+* [EBS CSI driver install - helm](https://archive.eksworkshop.com/beginner/170_statefulset/ebs_csi_driver/)
+* [sample AWS EBS app](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
+* [difference in EBS drivers](https://towardsaws.com/ebs-csi-driver-amazon-eks-4eab8966dbb4)
+
+
+#### ECR
 
 ### helm
 

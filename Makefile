@@ -20,11 +20,28 @@ get-revision:
 run-minikube:
 	kubectl delete namespace ${NAME} || exit 0
 	kubectl create namespace ${NAME}
+	kubectl apply -n ${NAME} -f k8s/storage/minikube
 	kubectl apply -n ${NAME} -f k8s/redis
 	kubectl apply  -n ${NAME} -f k8s/app
 	minikube service ${NAME} -n ${NAME}
 
+create-eks-cluster:
+	eksctl create cluster \
+		--name eks-cluster \
+		--region eu-central-1 \
+		--nodegroup-name eks-workers \
+		--node-type t2.micro \
+		--nodes 2 \
+		--nodes-min 2 \
+		--nodes-max 6
+	kubectl config use-context martin@eks-cluster.eu-central-1.eksctl.io
+	kubectl apply -f k8s/storage/eks/
+	kubectl apply -f k8s/redis/
+	kubectl apply -f k8s/app
+
 run-eks:
 	exit 1
 
-.PHONY: build-image upload-image get-revision run-app run-minikube
+.PHONY: build-image upload-image get-revision \
+	run-app run-minikube create-eks-cluster \
+	run-eks
