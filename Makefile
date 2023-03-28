@@ -1,6 +1,7 @@
 REPO = 532993743491.dkr.ecr.eu-central-1.amazonaws.com
 NAME = komplikovana
 FULL_NAME = ${REPO}/${NAME}
+REV=$(shell git rev-list --count --first-parent HEAD)
 
 run-app:
 	docker-compose up
@@ -9,13 +10,15 @@ build-image:
 	eval $(minikube docker-env)
 	docker build -t ${NAME} .
 	docker tag ${NAME}:latest ${FULL_NAME}:latest
+	docker tag ${NAME}:latest ${FULL_NAME}:${REV}
 
 upload-image:
 	aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${REPO}
 	docker push ${FULL_NAME}:latest
+	docker push ${FULL_NAME}:${REV}
 
 get-revision:
-	git rev-list --count --first-parent HEAD
+	echo ${REV}
 
 run-minikube:
 	kubectl delete namespace ${NAME} || exit 0
